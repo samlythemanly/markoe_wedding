@@ -1,0 +1,13 @@
+* Title: One sentence summary of the commit. Start with a capital and end with a period.
+
+* Description of why this change was necessary.
+# Description
+
+* Summary of what changes were made.
+# Changes
+
+* Describes what tests were made to ensure this works properly.
+* Include links to screenshots or screen recordings when appropriate.
+* Do NOT omit this. Rather, explain why testing wasn't necessary
+# Testing
+
