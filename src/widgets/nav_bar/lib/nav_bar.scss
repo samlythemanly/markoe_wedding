@@ -1,0 +1,37 @@
+
+
+.container {
+  display: flex;
+  width: 100%;
+  position: absolute;
+}
+
+.items {
+  color: black;
+  display: flex;
+  flex: 4;
+  font-weight: bold;
+  font-size: 24px;
+  justify-content: space-between;
+
+  a {
+    color: black;
+    text-decoration: none;
+
+    &:hover {
+      color: grey;
+
+      &:visited {
+        color: grey;
+      }
+    }
+
+    &:visited {
+      color: black;
+    }
+  }
+}
+
+.spacer {
+  flex: 2;
+}
