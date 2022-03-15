@@ -1,5 +1,9 @@
 import { Component } from 'react';
 
+import { Route } from '../../../common/navigation';
+import { registryRoute } from '../../registry_page';
+import { rsvpRoute } from '../../rsvp_page';
+
 import './home_page.scss';
 
 export class HomePage extends Component {
@@ -7,16 +11,14 @@ export class HomePage extends Component {
   private readonly bridesName = 'STEPHANIE';
   private readonly subtitle = 'June 3rd, 2023 5:00PM | ' +
     'Malibou Lake Lodge, Agoura Hills, CA';
-  private readonly rsvpText = 'RSVP';
-  private readonly registryText = 'REGISTRY';
 
-  private readonly backgroundImage =
+  private readonly backgroundImageUrl =
   `url(${ `${ process.env.PUBLIC_URL }/main_background.jpg` })`;
 
   public render(): JSX.Element {
     return (
-      <div className='root'
-           style={{ backgroundImage: this.backgroundImage }}>
+      <div className='home-container'
+           style={{ backgroundImage: this.backgroundImageUrl }}>
         <div className='main-content'>
           <header className='title'>
             <span>
@@ -33,14 +35,16 @@ export class HomePage extends Component {
             { this.subtitle }
           </div>
           <a className='button primary'>
-            { this.rsvpText }
+            { rsvpRoute.title }
           </a>
           <a className='button'>
-            { this.registryText }
+            { registryRoute.title }
           </a>
         </div>
       </div>
     );
   }
 }
+
+export const homeRoute = new Route('Home', HomePage, '/');
 

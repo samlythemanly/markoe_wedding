@@ -1,49 +1,38 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import {
-  accommodationsRoute,
-  dressCodeRoute,
-  gettingThereRoute,
-  ourStoryRoute,
-  registryRoute,
-  rsvpRoute,
-} from '../../../common/navigation';
+import { accommodationsRoute } from '../../accommodations_page';
+import { dressCodeRoute } from '../../dress_code_page';
+import { gettingThereRoute } from '../../getting_there_page';
+import { homeRoute } from '../../home_page';
+import { ourStoryRoute } from '../../our_story_page';
+import { registryRoute } from '../../registry_page';
+import { rsvpRoute } from '../../rsvp_page';
 
 import './nav_bar.scss';
 
 export class NavBar extends Component {
-  private readonly rsvpText = 'RSVP';
-  private readonly registryText = 'REGISTRY';
-  private readonly storyText = 'OUR STORY';
-  private readonly gettingThereText = 'GETTING THERE';
-  private readonly accommodationsText = 'ACCOMMODATIONS';
-  private readonly dressCodeText = 'DRESS CODE';
-
+  private static readonly orderedRoutes = [
+    homeRoute,
+    ourStoryRoute,
+    gettingThereRoute,
+    accommodationsRoute,
+    dressCodeRoute,
+    rsvpRoute,
+    registryRoute,
+  ].map((route) => (
+    <Link key={ route.title }
+          to={ route.path }>
+      { route.title }
+    </Link>
+  ));
 
   public render(): JSX.Element {
     return (
       <div className='container'>
         <div className='spacer' />
         <div className='items'>
-          <Link to={ ourStoryRoute }>
-            { this.storyText }
-          </Link>
-          <Link to={ gettingThereRoute }>
-            { this.gettingThereText }
-          </Link>
-          <Link to={ accommodationsRoute }>
-            { this.accommodationsText }
-          </Link>
-          <Link to={ dressCodeRoute }>
-            { this.dressCodeText }
-          </Link>
-          <Link to={ rsvpRoute }>
-            { this.rsvpText }
-          </Link>
-          <Link to={ registryRoute }>
-            { this.registryText }
-          </Link>
+          { NavBar.orderedRoutes }
         </div>
         <div className='spacer' />
       </div>

@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fade-enter {
+  height: 0;
+  line-height: 0;
+  opacity: 0;
+  width: 0;
+
+  &-done {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+
+.fade-exit {
+  opacity: 1;
+
+  &-active {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+  }
+
+  &-done {
+    display: none;
+  }
+}
+
+.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100vh;
+}
