@@ -5,7 +5,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import type { PropsWithChildren } from 'react';
 
-import './index.scss';
+import './common/navigation/route_transitions.scss';
+import styles from './index.module.scss';
 import { accommodationsRoute } from './widgets/accommodations_page';
 import { dressCodeRoute } from './widgets/dress_code_page';
 import { gettingThereRoute } from './widgets/getting_there_page';
@@ -25,14 +26,13 @@ const routes = [
   rsvpRoute,
 ].map((route) => (
   <Route key={ route.title }
-         index={ route === homeRoute }
          path={ route.path }
          element={ <route.Page /> } />
 ));
 
-const Root =
+const RootContainer =
   (props: PropsWithChildren<Record<string, undefined>>): JSX.Element =>
-    (<div className='root'>
+    (<div className={ styles.container }>
       { props.children }
     </div>);
 
@@ -41,7 +41,7 @@ const App = (): JSX.Element => {
   const location = useLocation();
 
   return (
-    <TransitionGroup component={ Root }>
+    <TransitionGroup component={ RootContainer }>
       <CSSTransition key={ location.pathname }
                      timeout={ 300 }
                      classNames='fade'>

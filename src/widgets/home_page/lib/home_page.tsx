@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Route } from '../../../common/navigation';
 import { registryRoute } from '../../registry_page';
 import { rsvpRoute } from '../../rsvp_page';
 
-import './home_page.scss';
+import styles from './home_page.module.scss';
 
 export class HomePage extends Component {
   private readonly groomsName = 'SAM';
@@ -17,29 +18,35 @@ export class HomePage extends Component {
 
   public render(): JSX.Element {
     return (
-      <div className='home-container'
+      <div className={ styles.container }
            style={{ backgroundImage: this.backgroundImageUrl }}>
-        <div className='main-content'>
-          <header className='title'>
+        <div className={ styles.mainContent }>
+          <header className={ styles.title }>
             <span>
               { this.groomsName }
             </span>
-            <span className='handwriting'>
+            <span className={ styles.handwriting }>
               &
             </span>
             <span>
               { this.bridesName }
             </span>
           </header>
-          <div className='subtitle'>
+          <div className={ styles.subtitle }>
             { this.subtitle }
           </div>
-          <a className='button primary'>
+          <Link key={ `home-${ rsvpRoute.title }` }
+                to={ rsvpRoute.path }
+                // eslint-disable-next-line react/forbid-component-props
+                className={ `${ styles.button } ${ styles.primary }` }>
             { rsvpRoute.title }
-          </a>
-          <a className='button'>
+          </Link>
+          <Link key={ `home-${ registryRoute.title }` }
+                to={ registryRoute.path }
+                // eslint-disable-next-line react/forbid-component-props
+                className={ styles.button }>
             { registryRoute.title }
-          </a>
+          </Link>
         </div>
       </div>
     );

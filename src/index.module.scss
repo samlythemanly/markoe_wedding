@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100vh;
+}

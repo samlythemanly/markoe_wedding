@@ -1,9 +1,6 @@
-body {
-  margin: 0;
-  font-family: 'Barlow Condensed', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+// Transitions for navigation.
+// This is NOT a module nor should it be one, since modular styles don't work
+// with CSSTransition's dynamic class names.
 
 .fade-enter {
   height: 0;
@@ -28,11 +25,4 @@ body {
   &-done {
     display: none;
   }
-}
-
-.root {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 100vh;
 }

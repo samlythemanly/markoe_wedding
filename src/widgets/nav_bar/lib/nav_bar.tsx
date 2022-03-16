@@ -9,7 +9,7 @@ import { ourStoryRoute } from '../../our_story_page';
 import { registryRoute } from '../../registry_page';
 import { rsvpRoute } from '../../rsvp_page';
 
-import './nav_bar.scss';
+import styles from './nav_bar.module.scss';
 
 export class NavBar extends Component {
   private static readonly orderedRoutes = [
@@ -29,12 +29,12 @@ export class NavBar extends Component {
 
   public render(): JSX.Element {
     return (
-      <div className='container'>
-        <div className='spacer' />
-        <div className='items'>
+      <div className={ styles.container }>
+        <div className={ styles.spacer } />
+        <div className={ styles.items }>
           { NavBar.orderedRoutes }
         </div>
-        <div className='spacer' />
+        <div className={ styles.spacer } />
       </div>
     );
   }

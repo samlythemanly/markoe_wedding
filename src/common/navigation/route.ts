@@ -1,6 +1,5 @@
 import type { Component } from 'react';
 
-
 const toKebabCase = (title: string): string => title
   .replace(/(?<lowercase>[a-z])(?<uppercase>[A-Z])/u, '$1-$2')
   .replace(/[\s_]+/u, '-')
