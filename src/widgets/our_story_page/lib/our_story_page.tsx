@@ -1,16 +1,13 @@
-
-import { Component } from 'react';
-
 import { Route } from '../../../common/navigation';
 
-export class OurStoryPage extends Component {
-  public render(): JSX.Element {
-    return (
-      <div>
-        Our story
-      </div>
-    );
-  }
+import styles from './our_story_page.module.scss';
+
+export function OurStoryPage(): JSX.Element {
+  return (
+    <div className={ styles.container }>
+      Our story
+    </div>
+  );
 }
 
 export const ourStoryRoute = new Route('Our story', OurStoryPage);

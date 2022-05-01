@@ -1,16 +1,13 @@
-
-import { Component } from 'react';
-
 import { Route } from '../../../common/navigation';
 
-export class RsvpPage extends Component {
-  public render(): JSX.Element {
-    return (
-      <div>
-        RSVP
-      </div>
-    );
-  }
+import styles from './rsvp_page.module.scss';
+
+export function RsvpPage(): JSX.Element {
+  return (
+    <div className={ styles.container }>
+      RSVP
+    </div>
+  );
 }
 
 export const rsvpRoute = new Route('RSVP', RsvpPage);

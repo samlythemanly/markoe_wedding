@@ -1,15 +1,13 @@
-import { Component } from 'react';
-
 import { Route } from '../../../common/navigation';
 
-export class AccommodationsPage extends Component {
-  public render(): JSX.Element {
-    return (
-      <div>
-        Accommodations
-      </div>
-    );
-  }
+import styles from './accommodations_page.module.scss';
+
+export function AccommodationsPage(): JSX.Element {
+  return (
+    <div className={ styles.container }>
+      Accommodations
+    </div>
+  );
 }
 
 export const accommodationsRoute =

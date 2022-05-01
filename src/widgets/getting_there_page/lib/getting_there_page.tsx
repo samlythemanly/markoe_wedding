@@ -1,16 +1,13 @@
-
-import { Component } from 'react';
-
 import { Route } from '../../../common/navigation';
 
-export class GettingTherePage extends Component {
-  public render(): JSX.Element {
-    return (
-      <div>
-        Getting there
-      </div>
-    );
-  }
+import styles from './getting_there_page.module.scss';
+
+export function GettingTherePage(): JSX.Element {
+  return (
+    <div className={ styles.container }>
+      Getting there
+    </div>
+  );
 }
 
 export const gettingThereRoute = new Route('Getting there', GettingTherePage);

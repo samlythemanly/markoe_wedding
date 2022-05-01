@@ -1,5 +1,6 @@
-import { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { makeEventKey } from '@restart/ui/SelectableContext';
+import { Navbar, Nav } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import { accommodationsRoute } from '../../accommodations_page';
 import { dressCodeRoute } from '../../dress_code_page';
@@ -11,8 +12,10 @@ import { rsvpRoute } from '../../rsvp_page';
 
 import styles from './nav_bar.module.scss';
 
-export class NavBar extends Component {
-  private static readonly orderedRoutes = [
+//
+/* eslint-disable react/forbid-component-props */
+export function NavBar(): JSX.Element {
+  const orderedRoutes = [
     homeRoute,
     ourStoryRoute,
     gettingThereRoute,
@@ -21,21 +24,29 @@ export class NavBar extends Component {
     rsvpRoute,
     registryRoute,
   ].map((route) => (
-    <Link key={ route.title }
-          to={ route.path }>
-      { route.title }
-    </Link>
+    <LinkContainer key={ route.title }
+                   to={ route.path }>
+      <Nav.Link key={ makeEventKey(route.title) }>
+        <div className={ styles.item }>
+          { route.title }
+        </div>
+      </Nav.Link>
+    </LinkContainer>
   ));
 
-  public render(): JSX.Element {
-    return (
-      <div className={ styles.container }>
-        <div className={ styles.spacer } />
-        <div className={ styles.items }>
-          { NavBar.orderedRoutes }
-        </div>
-        <div className={ styles.spacer } />
-      </div>
-    );
-  }
+  return (
+    <div className={ styles.container }>
+      <Navbar expand='lg'
+              variant='dark'
+              className={ styles.nav }
+              collapseOnSelect>
+        <Navbar.Toggle />
+        <Navbar.Offcanvas>
+          <Nav className={ `${ styles.sidebar } ${ styles.items }` }>
+            { orderedRoutes }
+          </Nav>
+        </Navbar.Offcanvas>
+      </Navbar>
+    </div>
+  );
 }

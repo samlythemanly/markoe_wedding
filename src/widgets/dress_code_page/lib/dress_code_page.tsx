@@ -1,16 +1,13 @@
-
-import { Component } from 'react';
-
 import { Route } from '../../../common/navigation';
 
-export class DressCodePage extends Component {
-  public render(): JSX.Element {
-    return (
-      <div>
-        Dress
-      </div>
-    );
-  }
+import styles from './dress_code_page.module.scss';
+
+export function DressCodePage(): JSX.Element {
+  return (
+    <div className={ styles.container }>
+      Dress code
+    </div>
+  );
 }
 
 export const dressCodeRoute = new Route('Dress code', DressCodePage);
