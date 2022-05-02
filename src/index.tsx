@@ -44,8 +44,9 @@ const App = (): JSX.Element => {
                 ({ match }) =>
                   (<CSSTransition nodeRef={ routeRefs[index] }
                                   classNames='routeTransition'
-                                  timeout={{ appear: 500, enter: 0, exit: 500 }}
+                                  timeout={{ appear: 300, enter: 0, exit: 300 }}
                                   appear
+
                                   unmountOnExit
                                   in={ match?.path === path }>
                     <div ref={ routeRefs[index] }
@@ -62,12 +63,14 @@ const App = (): JSX.Element => {
   );
 };
 
-render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <NavBar />
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+document.addEventListener('DOMContentLoaded', () => {
+  render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <NavBar />
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root'),
+  );
+});

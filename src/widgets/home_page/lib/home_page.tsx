@@ -12,7 +12,7 @@ export function HomePage(): JSX.Element {
   const subtitle = 'June 3rd, 2023 5:00PM | ' +
     'Malibou Lake Lodge, Agoura Hills, CA';
   const backgroundImageUrl =
-    `url(${ `${ process.env.PUBLIC_URL }/main_background.jpg` })`;
+    `url(${ `${ process.env.PUBLIC_URL }/home_background.jpg` })`;
 
   return (
     <div className={ styles.container }>

@@ -16,7 +16,7 @@
     &-done {
       opacity: 1;
       transition-property: background-color, opacity;
-      transition-duration: 500ms;
+      transition-duration: 300ms;
     }
   }
 
@@ -26,7 +26,7 @@
     &-active {
       opacity: 0;
       transition-property: background-color, opacity;
-      transition-duration: 500ms;
+      transition-duration: 300ms;
     }
   }
 }
