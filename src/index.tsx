@@ -46,7 +46,6 @@ const App = (): JSX.Element => {
                                   classNames='routeTransition'
                                   timeout={{ appear: 300, enter: 0, exit: 300 }}
                                   appear
-
                                   unmountOnExit
                                   in={ match?.path === path }>
                     <div ref={ routeRefs[index] }

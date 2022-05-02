@@ -2,16 +2,14 @@
   background: lightsteelblue;
   margin: 0;
   font-family: 'Barlow Condensed', sans-serif;
+  font-weight: lighter;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 :global .routeTransition {
   &-enter {
-    height: 0;
-    line-height: 0;
     opacity: 0;
-    width: 0;
 
     &-done {
       opacity: 1;
