@@ -419,7 +419,7 @@ module.exports = function (webpackEnv) {
                     },
                   ],
                 ],
-                
+
                 plugins: [
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
@@ -453,7 +453,7 @@ module.exports = function (webpackEnv) {
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
-                
+
                 // Babel sourcemaps are needed for debugging into node_modules
                 // code.  Without the options below, debuggers like VSCode
                 // show incorrect code and set breakpoints on the wrong lines.
@@ -498,6 +498,12 @@ module.exports = function (webpackEnv) {
                 modules: {
                   mode: 'local',
                   getLocalIdent: getCSSModuleLocalIdent,
+<<<<<<< Updated upstream
+                  localIdentName: "[name]__[local]___[hash:base64:5]",
+=======
+                  localIdentName: '[name]_[local]_[hash:base64:6]',
+>>>>>>> Stashed changes
+                  exportLocalsConvention: 'camelCase',
                 },
               }),
             },
@@ -538,6 +544,8 @@ module.exports = function (webpackEnv) {
                   modules: {
                     mode: 'local',
                     getLocalIdent: getCSSModuleLocalIdent,
+                    localIdentName: "[name]__[local]___[hash:base64:5]",
+                    exportLocalsConvention: 'camelCase'
                   },
                 },
                 'sass-loader'

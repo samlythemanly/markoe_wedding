@@ -30,7 +30,7 @@
   width: 100%;
   z-index: -2;
 
-  &Image {
+  &-image {
     background-repeat: no-repeat;
     background-position: center left;
     background-size: cover;
@@ -51,7 +51,7 @@
   font-family: 'Qwitcher Grypen', cursive;
 }
 
-.mainContent {
+.main-content {
   align-items: center;
   justify-content: center;
   color: white;
