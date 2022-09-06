@@ -24,26 +24,24 @@ export function NavBar(): JSX.Element {
     rsvpRoute,
     registryRoute,
   ].map((route) => (
-    <LinkContainer key={ route.title }
-                   to={ route.path }>
-      <Nav.Link key={ makeEventKey(route.title) }>
-        <div className={ styles.item }>
-          { route.title }
-        </div>
+    <LinkContainer key={route.title} to={route.path}>
+      <Nav.Link key={makeEventKey(route.title)}>
+        <div className={styles.item}>{route.title}</div>
       </Nav.Link>
     </LinkContainer>
   ));
 
   return (
-    <div className={ styles.container }>
-      <Navbar expand='lg'
-              variant='dark'
-              className={ styles.nav }
-              collapseOnSelect>
+    <div className={styles.container}>
+      <Navbar
+        expand="lg"
+        variant="dark"
+        className={styles.nav}
+        collapseOnSelect>
         <Navbar.Toggle />
         <Navbar.Offcanvas>
-          <Nav className={ `${ styles.sidebar } ${ styles.items }` }>
-            { orderedRoutes }
+          <Nav className={`${styles.sidebar} ${styles.items}`}>
+            {orderedRoutes}
           </Nav>
         </Navbar.Offcanvas>
       </Navbar>

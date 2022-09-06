@@ -1,14 +1,12 @@
-import { Route } from '../../../common/navigation';
+import { Route } from '../../../navigation';
 
 import styles from './accommodations_page.module.scss';
 
 export function AccommodationsPage(): JSX.Element {
-  return (
-    <div className={ styles.container }>
-      Accommodations
-    </div>
-  );
+  return <div className={styles.container}>Accommodations</div>;
 }
 
-export const accommodationsRoute =
-  new Route('Accommodations', AccommodationsPage);
+export const accommodationsRoute = new Route(
+  'Accommodations',
+  AccommodationsPage,
+);
