@@ -1,6 +1,6 @@
 import { LinkContainer } from 'react-router-bootstrap';
 
-import { Route } from '../../../common/navigation';
+import { Route } from '../../../navigation';
 import { registryRoute } from '../../registry_page';
 import { rsvpRoute } from '../../rsvp_page';
 

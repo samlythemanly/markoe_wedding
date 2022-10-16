@@ -498,11 +498,7 @@ module.exports = function (webpackEnv) {
                 modules: {
                   mode: 'local',
                   getLocalIdent: getCSSModuleLocalIdent,
-<<<<<<< Updated upstream
-                  localIdentName: "[name]__[local]___[hash:base64:5]",
-=======
                   localIdentName: '[name]_[local]_[hash:base64:6]',
->>>>>>> Stashed changes
                   exportLocalsConvention: 'camelCase',
                 },
               }),

@@ -1,4 +1,4 @@
-import { Route } from '../../../common/navigation';
+import { Route } from '../../../navigation';
 
 import styles from './getting_there_page.module.scss';
 
