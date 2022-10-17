@@ -1,0 +1,4 @@
+proseWrap: 'always'
+quoteProps: 'as-needed'
+singleQuote: true
+trailingComma: 'all'

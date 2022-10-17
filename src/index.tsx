@@ -1,10 +1,7 @@
 import 'bootstrap/scss/bootstrap.scss';
 import React from 'react';
 import { render } from 'react-dom';
-import {
-  BrowserRouter,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import styles from './index.module.scss';
@@ -31,32 +28,34 @@ const App = (): JSX.Element => {
   ];
 
   return (
-    <div className={ styles.container }>
-      <TransitionGroup component={ null }>
-        {
-          routes.map(({ path, Page }, index) => {
-            routeRefs[index] = React.useRef(null);
+    <div className={styles.container}>
+      <TransitionGroup component={null}>
+        {routes.map(({ path, Page }, index) => {
+          routeRefs[index] = React.useRef(null);
+          const transitionDuration = 600;
 
-            return (<Route key={ path }
-                           path={ path }
-                           exact>
-              {
-                ({ match }) =>
-                  (<CSSTransition nodeRef={ routeRefs[index] }
-                                  classNames='routeTransition'
-                                  timeout={{ appear: 300, enter: 0, exit: 300 }}
-                                  appear
-                                  unmountOnExit
-                                  in={ match?.path === path }>
-                    <div ref={ routeRefs[index] }
-                         className={ styles.page }>
-                      <Page />
-                    </div>
-                  </CSSTransition>)
-              }
-            </Route>);
-          })
-        }
+          return (
+            <Route key={path} path={path} exact>
+              {({ match }) => (
+                <CSSTransition
+                  nodeRef={routeRefs[index]}
+                  classNames="route-transition"
+                  timeout={{
+                    appear: transitionDuration / 2,
+                    enter: 0,
+                    exit: transitionDuration / 2,
+                  }}
+                  appear
+                  unmountOnExit
+                  in={match?.path === path}>
+                  <div ref={routeRefs[index]} className={styles.page}>
+                    <Page />
+                  </div>
+                </CSSTransition>
+              )}
+            </Route>
+          );
+        })}
       </TransitionGroup>
     </div>
   );
