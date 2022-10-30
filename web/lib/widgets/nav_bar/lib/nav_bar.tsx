@@ -38,11 +38,9 @@ export function NavBar(): JSX.Element {
         variant="dark"
         className={styles.nav}
         collapseOnSelect>
-        <Navbar.Toggle />
-        <Navbar.Offcanvas>
-          <Nav className={`${styles.sidebar} ${styles.items}`}>
-            {orderedRoutes}
-          </Nav>
+        <Navbar.Toggle className={styles.toggle} />
+        <Navbar.Offcanvas className={styles.sidebar}>
+          <Nav className={styles.items}>{orderedRoutes}</Nav>
         </Navbar.Offcanvas>
       </Navbar>
     </div>

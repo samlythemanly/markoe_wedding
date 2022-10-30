@@ -1,6 +1,6 @@
 {
   "env": { "browser": true, "es2021": true },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended"],
   "parserOptions": {
     "ecmaFeatures": { "jsx": true },
     "ecmaVersion": 12,
@@ -8,7 +8,7 @@
     "project": "./tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": ["react", "import", "html"],
+  "plugins": ["import"],
   "rules": {
     // Possible Problems
     "array-callback-return": "warn",
@@ -193,71 +193,6 @@
     "wrap-iife": "warn",
     "yield-star-spacing": "warn",
 
-    // React
-    "react/boolean-prop-naming": "warn",
-    "react/button-has-type": "warn",
-    "react/default-props-match-prop-types": "warn",
-    "react/destructuring-assignment": ["warn", "never"],
-    "react/forbid-component-props": "warn",
-    "react/forbid-dom-props": "warn",
-    "react/forbid-foreign-prop-types": "warn",
-    "react/no-access-state-in-setstate": "warn",
-    "react/no-array-index-key": "warn",
-    "react/no-danger": "warn",
-    "react/no-did-mount-set-state": "warn",
-    "react/no-did-update-set-state": "warn",
-    "react/no-invalid-html-attribute": "warn",
-    "react/no-multi-comp": "warn",
-    "react/no-namespace": "warn",
-    "react/no-redundant-should-component-update": "warn",
-    "react/no-this-in-sfc": "warn",
-    "react/no-typos": "warn",
-    "react/no-unsafe": "warn",
-    "react/no-unstable-nested-components": "warn",
-    "react/no-unused-class-component-methods": "warn",
-    "react/no-unused-prop-types": "warn",
-    "react/no-unused-state": "warn",
-    "react/no-will-update-set-state": "warn",
-    "react/prefer-es6-class": "warn",
-    "react/prefer-read-only-props": "warn",
-    "react/react-in-jsx-scope": "off",
-    "react/self-closing-comp": "warn",
-    "react/sort-comp": "warn",
-    "react/sort-prop-types": "warn",
-    "react/state-in-constructor": "warn",
-    "react/void-dom-elements-no-children": "warn",
-
-    // JSX
-    "react/jsx-boolean-value": "warn",
-    "react/jsx-closing-bracket-location": "warn",
-    "react/jsx-curly-brace-presence": "warn",
-    "react/jsx-curly-spacing": [
-      "warn",
-      {
-        "when": "never"
-      }
-    ],
-    "react/jsx-equals-spacing": "warn",
-    "react/jsx-filename-extension": ["warn", { "extensions": ["tsx", "jsx"] }],
-    "react/jsx-first-prop-new-line": ["warn", "multiline"],
-    "react/jsx-handler-names": "off",
-    "react/jsx-indent": [
-      "warn",
-      2,
-      { "checkAttributes": true, "indentLogicalExpressions": true }
-    ],
-    "react/jsx-indent-props": ["warn", "first"],
-    "react/jsx-newline": ["warn", { "prevent": true }],
-    "react/jsx-no-bind": "warn",
-    "react/jsx-no-constructed-context-values": "warn",
-    "react/jsx-no-script-url": "warn",
-    "react/jsx-no-useless-fragment": "warn",
-    "react/jsx-pascal-case": "warn",
-    "react/jsx-props-no-multi-spaces": "warn",
-    "react/jsx-props-no-spreading": "warn",
-    "react/jsx-tag-spacing": "warn",
-    "react/jsx-wrap-multilines": ["warn", { "declaration": "parens-new-line" }],
-
     "import/order": [
       "warn",
       {
@@ -282,7 +217,10 @@
       "extends": ["plugin:@typescript-eslint/recommended"],
       "files": ["**/*.ts", "**/*.tsx"],
       "parser": "@typescript-eslint/parser",
-      "parserOptions": { "project": ["./tsconfig.json"], "requireConfigFile": false },
+      "parserOptions": {
+        "project": ["./tsconfig.json"],
+        "requireConfigFile": false
+      },
       "plugins": ["@typescript-eslint"],
       "rules": {
         // Typescript

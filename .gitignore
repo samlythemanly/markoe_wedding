@@ -7,6 +7,7 @@
 node_modules
 /.pnp
 .pnp.js
+.pnp.cjs
 
 # testing
 /coverage
@@ -70,8 +71,8 @@ bower_components
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Optional npm cache directory
-.npm
+# Yarn
+.yarn/*
 
 # Optional eslint cache
 .eslintcache

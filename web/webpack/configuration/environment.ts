@@ -68,7 +68,7 @@ function environmentWith(publicUrl: string): {
         // Useful for resolving the correct path to static assets in `public`.
         // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
         // This should only be used as an escape hatch. Normally you would put
-        // Images into the `src` and `import` them in code to get their paths.
+        // Images into the `lib` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
 
         // We support configuring the sockjs pathname during development.

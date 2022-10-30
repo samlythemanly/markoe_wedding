@@ -63,9 +63,6 @@ const shouldUseTailwind = fs.existsSync(
   path.join(paths.app, 'tailwind.config.js'),
 );
 
-// Get the path to the uncompiled service worker (if it exists).
-const serviceWorkerPath = paths.serviceWorker;
-
 const cssRegex = /\.css$/u;
 const cssModuleRegex = /\.module\.css$/u;
 const sassRegex = /\.(?:scss|sass)$/u;
@@ -182,7 +179,7 @@ export default function webpackConfiguration(
           loader: resolve.sync('resolve-url-loader'),
           options: {
             sourceMap: shouldUseSourceMap,
-            root: paths.src,
+            root: paths.webapp,
           },
         },
         {
@@ -243,7 +240,7 @@ export default function webpackConfiguration(
       devtoolModuleFilenameTemplate: isProduction
         ? (info: webpack.AssetInfo) =>
             path
-              .relative(paths.src, info.absoluteResourcePath)
+              .relative(paths.webapp, info.absoluteResourcePath)
               .replace(/\\/u, '/')
         : (info: webpack.AssetInfo) =>
             path.resolve(info.absoluteResourcePath).replace(/\\/u, '/'),
@@ -324,7 +321,7 @@ export default function webpackConfiguration(
       // precendence if there are any conflicts. This matches the Node
       // resolution mechanism:
       // https://github.com/facebook/create-react-app/issues/253
-      modules: ['node_modules', paths.nodeModules, paths.src],
+      modules: ['node_modules', paths.nodeModules, paths.webapp],
 
       // These are the reasonable defaults supported by the Node ecosystem.
       // JSX is included as a common component filename extension to support
@@ -345,17 +342,16 @@ export default function webpackConfiguration(
               'scheduler/tracing': 'scheduler/tracing-profiling',
             }
           : {}),
-        src: paths.src,
+        src: paths.webapp,
       },
       plugins: [
-        // Prevents users from importing files from outside of src/ (or
-        // node_modules/). This often causes confusion because files are only
-        // processed within src/ with babel. To fix this, files are prevented
-        // from being imported out of src/. If this is desired, link the files
-        // into your node_modules/ and let module-resolution kick in. Make sure
-        // the source files are compiled, as they will not be processed in any
-        // way.
-        new ModuleScopePlugin(paths.src, [
+        // Prevents importing files from outside of lib (or node_modules). This
+        // often causes confusion because files are only processed within lib
+        // with babel. To fix this, files are prevented from being imported out
+        // of lib. If this is desired, link the files into node_modules and let
+        // module-resolution kick in. Make sure the source files are compiled,
+        // as they will not be processed in any way.
+        new ModuleScopePlugin(paths.webapp, [
           paths.packageJson,
           reactRefreshRuntimeEntry,
           reactRefreshWebpackPluginRuntimeEntry,
@@ -424,7 +420,7 @@ export default function webpackConfiguration(
             // TypeScript, and some ESNext features.
             {
               test: /\.(?:js|mjs|jsx|ts|tsx)$/u,
-              include: paths.src,
+              include: paths.webapp,
               loader: resolve.sync('babel-loader'),
               options: {
                 customize: resolve.sync(
@@ -709,10 +705,10 @@ export default function webpackConfiguration(
 
       // Generate a service worker script that will precache, and keep up to
       // date the HTML & assets that are part of the webpack build.
-      ...(isProduction && fs.existsSync(serviceWorkerPath)
+      ...(isProduction && fs.existsSync(paths.serviceWorker)
         ? [
             new WorkboxWebpackPlugin.InjectManifest({
-              swSrc: serviceWorkerPath,
+              swSrc: paths.serviceWorker,
               dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./u,
               exclude: [/\.map$/u, /asset-manifest\.json$/u, /LICENSE/u],
 
@@ -735,7 +731,7 @@ export default function webpackConfiguration(
           configOverwrite: {
             compilerOptions: {
               sourceMap: shouldUseSourceMap,
-              skipLibCheck: true,
+              skiplibCheck: true,
               inlineSourceMap: false,
               declarationMap: false,
               noEmit: true,
@@ -752,14 +748,14 @@ export default function webpackConfiguration(
           // doesn't match '../cra-template-typescript/template/src/App.tsx'
           // otherwise.
           include: [
-            { file: '../**/src/**/*.{ts,tsx}' },
-            { file: '**/src/**/*.{ts,tsx}' },
+            { file: '../**/lib/**/*.{ts,tsx}' },
+            { file: '**/lib/**/*.{ts,tsx}' },
           ],
           exclude: [
-            { file: '**/src/**/__tests__/**' },
-            { file: '**/src/**/?(*.){spec|test}.*' },
-            { file: '**/src/setupProxy.*' },
-            { file: '**/src/setupTests.*' },
+            { file: '**/lib/**/__tests__/**' },
+            { file: '**/lib/**/?(*.){spec|test}.*' },
+            { file: '**/lib/setupProxy.*' },
+            { file: '**/lib/setupTests.*' },
           ],
         },
         logger: { infrastructure: 'silent' },
@@ -772,7 +768,7 @@ export default function webpackConfiguration(
               formatter: resolve.sync('react-dev-utils/eslintFormatter'),
               eslintPath: resolve.sync('eslint'),
               failOnError: !isProduction || !shouldEmitErrorsAsWarnings,
-              context: paths.src,
+              context: paths.webapp,
               cache: true,
               cacheLocation: path.resolve(
                 paths.nodeModules,

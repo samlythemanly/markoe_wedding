@@ -1,34 +1,34 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2017",
   },
   "include": [
-    "src/**/*",
-    "webpack/**/*",
-    "typings/**/*.d.ts",
+    "web/**/*",
   ],
   "ts-node": {
     "compilerHost": true,
     "esm": true,
+    "experimentalSpecifierResolution": "node",
     "files": true,
-    "experimentalSpecifierResolution": "node"
   },
+  "references": [{
+    "path": "./web"
+  }],
 }

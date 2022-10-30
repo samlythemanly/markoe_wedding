@@ -71,7 +71,7 @@ export default function devServerConfiguration(
       // Note: the `public` folder is only recommend to be used as an escape
       // hatch for files like `favicon.ico`, `manifest.json`, and libraries that
       // are for some reason broken when imported through webpack. Images should
-      // be put in `src` and then imported it from JavaScript, instead.
+      // be put in `lib` and then imported it from JavaScript, instead.
       directory: paths.public,
       publicPath: [paths.publicUrlOrPath],
 
@@ -81,7 +81,7 @@ export default function devServerConfiguration(
         // https://github.com/facebook/create-react-app/issues/293
         // src/node_modules is not ignored to support absolute imports
         // https://github.com/facebook/create-react-app/issues/1065
-        ignored: ignoredFiles(paths.src),
+        ignored: ignoredFiles(paths.webapp),
       },
     },
     client: {

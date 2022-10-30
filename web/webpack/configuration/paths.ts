@@ -69,7 +69,7 @@ type Path =
   | 'html'
   | 'index'
   | 'packageJson'
-  | 'src'
+  | 'webapp'
   | 'tsConfig'
   | 'jsConfig'
   | 'yarnLock'
@@ -87,16 +87,16 @@ const paths: Record<Path, string> & { moduleFileExtensions: string[] } = {
   build: resolveApp(buildPath),
   dotenv: resolveApp('.env'),
   html: resolveApp('public/index.html'),
-  index: resolveModule(resolveApp, 'src/index'),
+  index: resolveModule(resolveApp, 'lib/index'),
   jsConfig: resolveApp('jsconfig.json'),
   nodeModules: resolveApp('node_modules'),
   packageJson: resolveApp('package.json'),
-  proxySetup: resolveApp('src/setupProxy.js'),
+  proxySetup: resolveApp('lib/setupProxy.js'),
   public: resolveApp('public'),
   publicUrlOrPath,
-  serviceWorker: resolveModule(resolveApp, 'src/service-worker'),
-  src: resolveApp('src'),
-  testSetup: resolveModule(resolveApp, 'src/setupTests'),
+  serviceWorker: resolveModule(resolveApp, 'lib/service-worker'),
+  webapp: resolveApp('lib'),
+  testSetup: resolveModule(resolveApp, 'lib/setupTests'),
   tsBuildInfo: resolveApp('node_modules/.cache/tsconfig.tsbuildinfo'),
   tsConfig: resolveApp('tsconfig.json'),
   webpackCache: resolveApp('node_modules/.cache'),

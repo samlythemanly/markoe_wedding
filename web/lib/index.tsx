@@ -14,31 +14,34 @@ import { ourStoryRoute } from './widgets/our_story_page';
 import { registryRoute } from './widgets/registry_page';
 import { rsvpRoute } from './widgets/rsvp_page';
 
-const App = (): JSX.Element => {
-  const routeRefs: React.MutableRefObject<null>[] = [];
+const routes = [
+  accommodationsRoute,
+  dressCodeRoute,
+  gettingThereRoute,
+  homeRoute,
+  ourStoryRoute,
+  registryRoute,
+  rsvpRoute,
+];
 
-  const routes = [
-    accommodationsRoute,
-    dressCodeRoute,
-    gettingThereRoute,
-    homeRoute,
-    ourStoryRoute,
-    registryRoute,
-    rsvpRoute,
-  ];
+const App = (): JSX.Element => {
+  const routeRefs = React.useRef(
+    Array(routes.length)
+      .fill(null)
+      .map(() => React.createRef<HTMLDivElement>()),
+  );
 
   return (
     <div className={styles.container}>
       <TransitionGroup component={null}>
         {routes.map(({ path, Page }, index) => {
-          routeRefs[index] = React.useRef(null);
           const transitionDuration = 600;
 
           return (
             <Route key={path} path={path} exact>
               {({ match }) => (
                 <CSSTransition
-                  nodeRef={routeRefs[index]}
+                  nodeRef={routeRefs.current[index]}
                   classNames="route-transition"
                   timeout={{
                     appear: transitionDuration / 2,
@@ -47,8 +50,9 @@ const App = (): JSX.Element => {
                   }}
                   appear
                   unmountOnExit
-                  in={match?.path === path}>
-                  <div ref={routeRefs[index]} className={styles.page}>
+                  in={match?.path === path}
+                >
+                  <div ref={routeRefs.current[index]} className={styles.page}>
                     <Page />
                   </div>
                 </CSSTransition>
