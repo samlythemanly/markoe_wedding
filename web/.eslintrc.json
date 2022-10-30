@@ -1,7 +1,7 @@
 {
+  "env": { "browser": true },
   "extends": ["../.eslintrc.json", "plugin:react/recommended"],
   "parserOptions": {
-    "parser": "babel-eslint",
     "ecmaFeatures": { "jsx": true },
     "project": "./tsconfig.json"
   },
@@ -43,7 +43,7 @@
 
     // JSX
     "react/jsx-boolean-value": "warn",
-    "react/jsx-closing-bracket-location": ["warn", "after-props"],
+    "react/jsx-closing-bracket-location": ["warn", "tag-aligned"],
     "react/jsx-curly-brace-presence": "warn",
     "react/jsx-curly-spacing": [
       "warn",

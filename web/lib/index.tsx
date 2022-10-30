@@ -50,8 +50,7 @@ const App = (): JSX.Element => {
                   }}
                   appear
                   unmountOnExit
-                  in={match?.path === path}
-                >
+                  in={match?.path === path}>
                   <div ref={routeRefs.current[index]} className={styles.page}>
                     <Page />
                   </div>

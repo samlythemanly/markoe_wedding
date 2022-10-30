@@ -272,7 +272,6 @@ export default function webpackConfiguration(
               // code:
               // https://github.com/facebook/create-react-app/pull/4234
               ecma: 5,
-              warnings: false,
 
               // Disabled because of an issue with Uglify breaking seemingly
               // valid code:

@@ -1,11 +1,10 @@
 {
-  "env": { "browser": true, "es2021": true },
+  "root": true,
+  "env": { "es2021": true },
   "extends": ["eslint:recommended"],
   "parserOptions": {
-    "ecmaFeatures": { "jsx": true },
     "ecmaVersion": 12,
     "parser": "babel-eslint",
-    "project": "./tsconfig.json",
     "sourceType": "module"
   },
   "plugins": ["import"],
@@ -41,7 +40,7 @@
     "no-alert": "warn",
     "no-array-constructor": "warn",
     "no-caller": "warn",
-    "no-console": "warn",
+    "no-console": ["warn", { "allow": ["debug"] }],
     "no-else-return": ["warn", { "allowElseIf": false }],
     "no-empty-function": "warn",
     "no-eval": "warn",
@@ -57,20 +56,9 @@
     "no-lone-blocks": "warn",
     "no-lonely-if": "warn",
     "no-loop-func": "warn",
-    "no-magic-numbers": [
-      "warn",
-      {
-        "ignore": [0, 1, 2],
-        "ignoreArrayIndexes": true,
-        "ignoreDefaultValues": true,
-        "enforceConst": true,
-        "detectObjects": true
-      }
-    ],
     "no-mixed-operators": "warn",
     "no-multi-assign": "warn",
     "no-multi-str": "warn",
-    "no-negated-condition": "warn",
     "no-nested-ternary": "warn",
     "no-new": "warn",
     "no-new-func": "warn",
@@ -84,7 +72,6 @@
     "no-sequences": "warn",
     "no-shadow": "warn",
     "no-throw-literal": "warn",
-    "no-underscore-dangle": "warn",
     "no-unused-expressions": "warn",
     "no-useless-call": "warn",
     "no-useless-computed-key": "warn",
@@ -97,7 +84,7 @@
     "object-shorthand": "warn",
     "operator-assignment": "warn",
     "one-var": ["warn", "never"],
-    "prefer-arrow-callback": "warn",
+    "prefer-arrow-callback": ["warn", { "allowNamedFunctions": true }],
     "prefer-const": "warn",
     "prefer-exponentiation-operator": "warn",
     "prefer-named-capture-group": "warn",
@@ -140,17 +127,20 @@
     "lines-around-comment": [
       "warn",
       {
-        "beforeBlockComment": true,
-        "beforeLineComment": true,
         "allowArrayStart": true,
         "allowBlockStart": true,
         "allowClassStart": true,
-        "allowObjectStart": true
+        "allowObjectStart": true,
+        "beforeBlockComment": true,
+        "beforeLineComment": true
       }
     ],
     "max-len": [
       "warn",
-      { "ignoreUrls": true, "ignorePattern": "^import\\s.+\\sfrom\\s.+;$" }
+      {
+        "ignoreUrls": true,
+        "ignorePattern": "(^import .+ from .+;$)|(^((describe)|(test))\\('|\".*'|\", \\(\\) => \\{(\\}\\);)?$)"
+      }
     ],
     "max-statements-per-line": "warn",
     "new-parens": "warn",
@@ -217,10 +207,7 @@
       "extends": ["plugin:@typescript-eslint/recommended"],
       "files": ["**/*.ts", "**/*.tsx"],
       "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "project": ["./tsconfig.json"],
-        "requireConfigFile": false
-      },
+      "parserOptions": { "requireConfigFile": false },
       "plugins": ["@typescript-eslint"],
       "rules": {
         // Typescript
@@ -251,7 +238,6 @@
         "@typescript-eslint/no-confusing-void-expression": "off",
         "@typescript-eslint/no-dynamic-delete": "warn",
         "@typescript-eslint/no-extraneous-class": "warn",
-        "@typescript-eslint/no-invalid-void-type": "warn",
         "@typescript-eslint/no-meaningless-void-operator": "warn",
         "@typescript-eslint/no-parameter-properties": "warn",
         "@typescript-eslint/no-require-imports": "warn",
@@ -259,6 +245,7 @@
         "@typescript-eslint/no-unnecessary-condition": "warn",
         "@typescript-eslint/no-unnecessary-qualifier": "warn",
         "@typescript-eslint/no-unnecessary-type-arguments": "warn",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/non-nullable-type-assertion-style": "warn",
         "@typescript-eslint/prefer-for-of": "warn",
         "@typescript-eslint/prefer-function-type": "warn",
@@ -307,17 +294,6 @@
         "no-loop-func": "off",
         "@typescript-eslint/no-loss-of-precision": "warn",
         "no-loss-of-precision": "off",
-        "@typescript-eslint/no-magic-numbers": [
-          "warn",
-          {
-            "ignore": [-1, 0, 1, 2],
-            "ignoreArrayIndexes": true,
-            "ignoreDefaultValues": true,
-            "enforceConst": true,
-            "detectObjects": true
-          }
-        ],
-        "no-magic-numbers": "off",
         "@typescript-eslint/no-redeclare": "warn",
         "no-redeclare": "off",
         "@typescript-eslint/no-shadow": "warn",
@@ -326,7 +302,13 @@
         "no-throw-literal": "off",
         "@typescript-eslint/no-unused-expressions": "warn",
         "no-unused-expressions": "off",
-        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "argsIgnorePattern": "^_+",
+            "varsIgnorePattern": "^_+"
+          }
+        ],
         "no-unused-vars": "off",
         "@typescript-eslint/no-use-before-define": "warn",
         "no-use-before-define": "off",

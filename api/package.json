@@ -1,0 +1,29 @@
+{
+  "name": "@api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "build/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.4.1",
+    "firebase-functions": "^4.1.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.0.0",
+    "firebase-tools": "^10.0.0",
+    "mock-firebase-ts": "^2.6.2"
+  },
+  "peerDependencies": {
+    "jest": "*",
+    "ts-jest": "*",
+    "typescript": "*"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -b --watch",
+    "dev": "firebase emulators:start --only firestore,functions",
+    "start": "firebase functions:shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase log",
+    "test": "jest"
+  }
+}

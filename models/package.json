@@ -1,0 +1,12 @@
+{
+  "name": "@models",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  }
+}

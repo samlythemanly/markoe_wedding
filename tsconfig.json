@@ -5,30 +5,25 @@
     "composite": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
+    "outDir": "build",
     "resolveJsonModule": true,
+    "rootDir": ".",
     "skipLibCheck": true,
     "strict": true,
     "target": "es2017",
   },
-  "include": [
-    "web/**/*",
-  ],
   "ts-node": {
     "compilerHost": true,
     "esm": true,
     "experimentalSpecifierResolution": "node",
     "files": true,
   },
-  "references": [{
-    "path": "./web"
-  }],
 }
