@@ -62,44 +62,54 @@ function resolveModule(
 }
 
 type Path =
-  | 'dotenv'
   | 'app'
+  | 'assets'
   | 'build'
-  | 'public'
+  | 'common'
+  | 'dotenv'
   | 'html'
   | 'index'
-  | 'packageJson'
-  | 'webapp'
-  | 'tsConfig'
   | 'jsConfig'
-  | 'yarnLock'
-  | 'testSetup'
-  | 'proxySetup'
   | 'nodeModules'
-  | 'webpackCache'
-  | 'tsBuildInfo'
+  | 'packageJson'
+  | 'project'
+  | 'proxySetup'
+  | 'public'
+  | 'publicUrlOrPath'
+  | 'services'
   | 'serviceWorker'
-  | 'publicUrlOrPath';
+  | 'testSetup'
+  | 'tsBuildInfo'
+  | 'tsConfig'
+  | 'views'
+  | 'webpackCache'
+  | 'widgets'
+  | 'yarnLock';
 
 // Config after eject: we're in ./config/
 const paths: Record<Path, string> & { moduleFileExtensions: string[] } = {
   app: resolveApp('.'),
+  assets: resolveApp('assets'),
   build: resolveApp(buildPath),
-  dotenv: resolveApp('.env'),
+  common: resolveApp('common'),
+  dotenv: resolveApp('../.env'),
   html: resolveApp('public/index.html'),
-  index: resolveModule(resolveApp, 'lib/index'),
+  index: resolveModule(resolveApp, 'index'),
   jsConfig: resolveApp('jsconfig.json'),
   nodeModules: resolveApp('node_modules'),
   packageJson: resolveApp('package.json'),
-  proxySetup: resolveApp('lib/setupProxy.js'),
+  project: resolveApp('..'),
+  proxySetup: resolveApp('setupProxy.js'),
   public: resolveApp('public'),
   publicUrlOrPath,
-  serviceWorker: resolveModule(resolveApp, 'lib/service-worker'),
-  webapp: resolveApp('lib'),
-  testSetup: resolveModule(resolveApp, 'lib/setupTests'),
+  services: resolveApp('services'),
+  serviceWorker: resolveModule(resolveApp, 'service-worker'),
+  testSetup: resolveModule(resolveApp, 'setupTests'),
   tsBuildInfo: resolveApp('node_modules/.cache/tsconfig.tsbuildinfo'),
   tsConfig: resolveApp('tsconfig.json'),
+  views: resolveApp('views'),
   webpackCache: resolveApp('node_modules/.cache'),
+  widgets: resolveApp('widgets'),
   yarnLock: resolveApp('yarn.lock'),
 
   moduleFileExtensions,

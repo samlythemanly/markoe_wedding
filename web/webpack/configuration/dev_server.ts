@@ -81,7 +81,7 @@ export default function devServerConfiguration(
         // https://github.com/facebook/create-react-app/issues/293
         // src/node_modules is not ignored to support absolute imports
         // https://github.com/facebook/create-react-app/issues/1065
-        ignored: ignoredFiles(paths.webapp),
+        ignored: ignoredFiles(paths.app),
       },
     },
     client: {

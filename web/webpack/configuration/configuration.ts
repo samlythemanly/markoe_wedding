@@ -179,7 +179,7 @@ export default function webpackConfiguration(
           loader: resolve.sync('resolve-url-loader'),
           options: {
             sourceMap: shouldUseSourceMap,
-            root: paths.webapp,
+            root: paths.app,
           },
         },
         {
@@ -240,7 +240,7 @@ export default function webpackConfiguration(
       devtoolModuleFilenameTemplate: isProduction
         ? (info: webpack.AssetInfo) =>
             path
-              .relative(paths.webapp, info.absoluteResourcePath)
+              .relative(paths.app, info.absoluteResourcePath)
               .replace(/\\/u, '/')
         : (info: webpack.AssetInfo) =>
             path.resolve(info.absoluteResourcePath).replace(/\\/u, '/'),
@@ -320,7 +320,7 @@ export default function webpackConfiguration(
       // precendence if there are any conflicts. This matches the Node
       // resolution mechanism:
       // https://github.com/facebook/create-react-app/issues/253
-      modules: ['node_modules', paths.nodeModules, paths.webapp],
+      modules: ['node_modules', paths.nodeModules, paths.app],
 
       // These are the reasonable defaults supported by the Node ecosystem.
       // JSX is included as a common component filename extension to support
@@ -341,7 +341,13 @@ export default function webpackConfiguration(
               'scheduler/tracing': 'scheduler/tracing-profiling',
             }
           : {}),
-        src: paths.webapp,
+        src: paths.app,
+
+        '@assets': paths.assets,
+        '@common': paths.common,
+        '@services': paths.services,
+        '@views': paths.views,
+        '@widgets': paths.widgets,
       },
       plugins: [
         // Prevents importing files from outside of lib (or node_modules). This
@@ -350,7 +356,7 @@ export default function webpackConfiguration(
         // of lib. If this is desired, link the files into node_modules and let
         // module-resolution kick in. Make sure the source files are compiled,
         // as they will not be processed in any way.
-        new ModuleScopePlugin(paths.webapp, [
+        new ModuleScopePlugin(paths.app, [
           paths.packageJson,
           reactRefreshRuntimeEntry,
           reactRefreshWebpackPluginRuntimeEntry,
@@ -419,7 +425,7 @@ export default function webpackConfiguration(
             // TypeScript, and some ESNext features.
             {
               test: /\.(?:js|mjs|jsx|ts|tsx)$/u,
-              include: paths.webapp,
+              include: paths.project,
               loader: resolve.sync('babel-loader'),
               options: {
                 customize: resolve.sync(
@@ -746,15 +752,12 @@ export default function webpackConfiguration(
           // This one is specifically to match during CI tests, as micromatch
           // doesn't match '../cra-template-typescript/template/src/App.tsx'
           // otherwise.
-          include: [
-            { file: '../**/lib/**/*.{ts,tsx}' },
-            { file: '**/lib/**/*.{ts,tsx}' },
-          ],
+          include: [{ file: '../**/*.{ts,tsx}' }, { file: '**/*.{ts,tsx}' }],
           exclude: [
-            { file: '**/lib/**/__tests__/**' },
-            { file: '**/lib/**/?(*.){spec|test}.*' },
-            { file: '**/lib/setupProxy.*' },
-            { file: '**/lib/setupTests.*' },
+            { file: '**/__tests__/**' },
+            { file: '**/?(*.){spec|test}.*' },
+            { file: '**/setupProxy.*' },
+            { file: '**/setupTests.*' },
           ],
         },
         logger: { infrastructure: 'silent' },
@@ -767,7 +770,7 @@ export default function webpackConfiguration(
               formatter: resolve.sync('react-dev-utils/eslintFormatter'),
               eslintPath: resolve.sync('eslint'),
               failOnError: !isProduction || !shouldEmitErrorsAsWarnings,
-              context: paths.webapp,
+              context: paths.app,
               cache: true,
               cacheLocation: path.resolve(
                 paths.nodeModules,
