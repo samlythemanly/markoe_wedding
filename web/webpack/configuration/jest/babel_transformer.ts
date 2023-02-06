@@ -1,13 +1,10 @@
 import babelJest from 'babel-jest';
-import resolve from 'resolve';
 
-function hasJsxRuntime(): boolean {
+async function hasJsxRuntime(): Promise<boolean> {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') return false;
 
-  if (!import.meta.resolve) return false;
-
   try {
-    resolve.sync('react/jsx-runtime');
+    await import('react/jsx-runtime');
   } catch (_) {
     return false;
   }
@@ -18,8 +15,8 @@ function hasJsxRuntime(): boolean {
 const createTransformer = babelJest.createTransformer({
   presets: [
     [
-      resolve.sync('babel-preset-react-app'),
-      { runtime: hasJsxRuntime() ? 'automatic' : 'classic' },
+      await import('babel-preset-react-app'),
+      { runtime: (await hasJsxRuntime()) ? 'automatic' : 'classic' },
     ],
   ],
   babelrc: false,

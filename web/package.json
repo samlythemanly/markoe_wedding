@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.8",
     "@svgr/webpack": "^6.5.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -50,14 +51,15 @@
     "@types/autosuggest-highlight": "^3.2.0",
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.6",
     "@types/fs-extra": "^9.0.13",
-    "@types/jest": "^29.2.0",
-    "@types/node": "^18.11.9",
+    "@types/google.maps": "^3.51.0",
     "@types/react": "^18.0.24",
     "@types/react-dev-utils": "^9.0.11",
     "@types/react-dom": "^18.0.8",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-test-renderer": "^18.0.0",
     "@types/react-transition-group": "^4.4.5",
     "@types/semver": "^7.3.13",
+    "babel-preset-react-app": "^10.0.1",
     "bfj": "^7.0.2",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "css-loader": "^6.7.1",
@@ -79,7 +81,7 @@
     "postcss-preset-env": "^7.8.2",
     "prompts": "^2.4.2",
     "react-dev-utils": "^12.0.1",
-    "resolve": "^1.22.1",
+    "react-refresh": "^0.14.0",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
@@ -106,70 +108,18 @@
     "eslint-plugin-import": "*",
     "eslint-webpack-plugin": "*",
     "jest": "*",
+    "jest-cli": "*",
     "jest-environment-jsdom": "*",
     "jest-resolve": "*",
     "jest-watch-typeahead": "*",
     "prettier": "*",
+    "ts-jest": "*",
     "ts-node": "*",
     "typescript": "*",
     "webpack": "*"
   },
   "resolutions": {
     "@types/webpack": "^5.28.0"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/lib"
-    ],
-    "collectCoverageFrom": [
-      "**/*.{js,jsx,ts,tsx}",
-      "!**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/webpack/configuration/jest/babel_transformer.ts",
-      "^.+\\.css$": "<rootDir>/webpack/configuration/jest/css_transformer.ts",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/webpack/configuration/jest/file_transformer.ts"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   },
   "packageManager": "yarn@3.2.4"
 }

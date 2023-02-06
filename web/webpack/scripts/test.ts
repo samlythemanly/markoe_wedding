@@ -21,7 +21,7 @@ await import('../configuration/environment');
 
 import { execSync } from 'child_process';
 
-import jest from 'jest';
+import jest from 'jest-cli';
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const argv = process.argv.slice(2);

@@ -1,15 +1,13 @@
 import { Route } from '@common/navigation';
-import { Box } from '@mui/material';
+import { RsvpSelector } from '@widgets/rsvp_selector';
+import React from 'react';
 
-/**
- * Enables users to look up their RSVP and make edits to them.
- */
+import type { Rsvp } from '@models';
+
 export function RsvpPage(): JSX.Element {
-  return (
-    <Box display="flex" justifyContent="center">
-      Rsvp
-    </Box>
-  );
+  const [_, setRsvp] = React.useState<Rsvp>();
+
+  return <RsvpSelector onRetrieval={setRsvp} />;
 }
 
 export const rsvpRoute = new Route('RSVP', RsvpPage);

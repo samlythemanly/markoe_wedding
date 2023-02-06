@@ -60,8 +60,12 @@
           rel="preload"
           as="image">
 
-    <script async
-            src="https://maps.googleapis.com/maps/api/js?key=%PLACES_API_KEY%&libraries=places&callback=initMap">
+    <script>
+      // No-op function to pass to the Google Maps API loading script, since
+      // a callback is required.
+      window.noop = () => undefined;
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=%CLOUD_API_KEY%&libraries=places&callback=noop">
     </script>
 
     <title>Markoe Wedding - June 3, 2023</title>

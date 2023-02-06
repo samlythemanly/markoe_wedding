@@ -124,22 +124,11 @@
     "keyword-spacing": "warn",
     "line-comment-position": "warn",
     "linebreak-style": ["warn", "unix"],
-    "lines-around-comment": [
-      "warn",
-      {
-        "allowArrayStart": true,
-        "allowBlockStart": true,
-        "allowClassStart": true,
-        "allowObjectStart": true,
-        "beforeBlockComment": true,
-        "beforeLineComment": true
-      }
-    ],
     "max-len": [
       "warn",
       {
         "ignoreUrls": true,
-        "ignorePattern": "(^import .+ from .+;$)|(^((describe)|(test))\\('|\".*'|\", \\(\\) => \\{(\\}\\);)?$)"
+        "ignorePattern": "(^import .+ from .+;$)|(^\\s+((describe)|(test))\\(('|\").*('|\"), (async )?\\(\\) => \\{(\\}\\);)?$)"
       }
     ],
     "max-statements-per-line": "warn",

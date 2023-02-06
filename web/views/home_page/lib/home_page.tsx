@@ -98,10 +98,10 @@ export function HomePage(): JSX.Element {
         width="100%"
         zIndex="-1"
         sx={{
-          'background-image': backgroundImageUrl,
-          'background-repeat': 'no-repeat',
-          'background-position': 'center left',
-          'background-size': 'cover',
+          backgroundImage: backgroundImageUrl,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center left',
+          backgroundSize: 'cover',
           opacity: 0.5,
         }}
       />

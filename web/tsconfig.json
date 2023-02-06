@@ -2,7 +2,6 @@
   "extends": "../tsconfig.json",
   "include": [
     "./**/*",
-
   ],
   "compilerOptions": {
     "baseUrl": ".",
@@ -27,6 +26,11 @@
       "@widgets/*": [
         "./widgets/*",
       ],
+    },
+  },
+  "ts-node": {
+    "moduleTypes": {
+      "jest.config.ts": "cjs"
     }
   },
 }
