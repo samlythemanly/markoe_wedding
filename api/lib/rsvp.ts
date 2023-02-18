@@ -1,3 +1,7 @@
+import fs from 'fs';
+
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 import * as firebase from 'firebase-admin';
 import { https, region } from 'firebase-functions';
 
@@ -8,28 +12,32 @@ import type { CallableContext } from 'firebase-functions/v1/https';
 const app = firebase.initializeApp();
 const firestore = app.firestore();
 
+if (fs.existsSync('../.env')) {
+  dotenvExpand(dotenv.config({ path: '../.env' }));
+}
+
 /**
  * Partial RSVP but with required ID.
  */
 export type PartialRsvp = Partial<Omit<Rsvp, 'id'>> & { id: string };
 
 /**
- * Retrieves an RSVP by ID.
+ * Retrieves RSVPs by ID.
  *
- * The ID matches the place ID of the address the physical invitations are sent
- * to.
+ * The ID matches the place ID of the address to which the physical invitations
+ * are sent.
  */
-async function fetch(id: string): Promise<Rsvp> {
+async function fetch(id: string): Promise<Rsvp[]> {
   const document = await firestore
-    .collection(process.env.RSVP_COLLECTION!)
+    .collection(process.env.rsvpCollection!)
     .doc(id)
     .get();
 
   if (!document.exists) {
-    throw new https.HttpsError('not-found', `RSVP with ID ${id} not found.`);
+    return [];
   }
 
-  return document.data() as Rsvp;
+  return document.data() as Rsvp[];
 }
 
 /**
@@ -37,7 +45,7 @@ async function fetch(id: string): Promise<Rsvp> {
  */
 async function upsert(rsvp: PartialRsvp): Promise<void> {
   await firestore
-    .collection(process.env.RSVP_COLLECTION!)
+    .collection(process.env.rsvpCollection!)
     .doc(rsvp.id)
     .set(rsvp, { merge: true });
 }
@@ -46,7 +54,7 @@ async function upsert(rsvp: PartialRsvp): Promise<void> {
  * Validates the request is properly formed.
  */
 function validateRequest(context: CallableContext): void {
-  if (!context.app && process.env.DISABLE_APP_CHECK?.toLowerCase() !== 'true') {
+  if (!context.app && process.env.disableAppCheck?.toLowerCase() !== 'true') {
     throw new https.HttpsError('unauthenticated', 'Unauthenticated.');
   }
 }
@@ -58,9 +66,9 @@ function validateRequest(context: CallableContext): void {
 function httpFunction<T, S>(
   rsvpFunction: (parameter: T) => Promise<S>,
 ): HttpsFunction & Runnable<T> {
-  return region(process.env.REGION!)
+  return region(process.env.region!)
     .runWith({
-      enforceAppCheck: process.env.DISABLE_APP_CHECK?.toLowerCase() !== 'true',
+      enforceAppCheck: process.env.disableAppCheck?.toLowerCase() !== 'true',
     })
     .https.onCall(async (parameter: T, context: CallableContext) => {
       try {
@@ -83,5 +91,5 @@ function httpFunction<T, S>(
     });
 }
 
-export const fetchRsvp = httpFunction<string, Rsvp>(fetch);
+export const fetchRsvps = httpFunction<string, Rsvp[]>(fetch);
 export const upsertRsvp = httpFunction<PartialRsvp, void>(upsert);

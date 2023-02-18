@@ -9,8 +9,8 @@ import { Link as RouterLink } from 'react-router-dom';
  * Displays general information for the wedding (along with a cute picture).
  */
 export function HomePage(): JSX.Element {
-  const groomsName = 'Sam';
-  const bridesName = 'Stephanie';
+  const groomsName = process.env.groomName;
+  const bridesName = process.env.brideName;
   const date = 'June 3rd, 2023 5:00PM';
   const location = 'Malibou Lake Lodge, Agoura Hills, CA';
   const publicUrl = process.env.PUBLIC_URL;

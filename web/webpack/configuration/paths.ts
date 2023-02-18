@@ -79,6 +79,7 @@ type Path =
   | 'services'
   | 'serviceWorker'
   | 'testSetup'
+  | 'theme'
   | 'tsBuildInfo'
   | 'tsConfig'
   | 'views'
@@ -105,6 +106,7 @@ const paths: Record<Path, string> & { moduleFileExtensions: string[] } = {
   services: resolveApp('services'),
   serviceWorker: resolveModule(resolveApp, 'service-worker'),
   testSetup: resolveModule(resolveApp, 'setupTests'),
+  theme: resolveApp('theme'),
   tsBuildInfo: resolveApp('node_modules/.cache/tsconfig.tsbuildinfo'),
   tsConfig: resolveApp('tsconfig.json'),
   views: resolveApp('views'),

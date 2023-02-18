@@ -6,6 +6,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@models": "*",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.2",
     "autosuggest-highlight": "^3.3.4",
@@ -13,7 +14,7 @@
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^5.3.1",
+    "react-router-dom": "^6.8.1",
     "react-transition-group": "^4.4.5",
     "util": "^0.12.5"
   },
@@ -64,8 +65,6 @@
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.2.2",
-    "dotenv": "^16.0.3",
-    "dotenv-expand": "^5.1.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-html": "^7.1.0",
     "eslint-plugin-react": "^7.31.10",
@@ -87,6 +86,7 @@
     "sass-loader": "^13.1.0",
     "semver": "^7.3.8",
     "source-map-loader": "^4.0.1",
+    "stream": "^0.0.2",
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.2.1",
     "terser-webpack-plugin": "^5.3.6",
@@ -117,9 +117,5 @@
     "ts-node": "*",
     "typescript": "*",
     "webpack": "*"
-  },
-  "resolutions": {
-    "@types/webpack": "^5.28.0"
-  },
-  "packageManager": "yarn@3.2.4"
+  }
 }

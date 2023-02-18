@@ -6,9 +6,6 @@ import type { Guest } from './guest';
 export interface Rsvp {
   /**
    *  The unique ID of the RSVP.
-   *
-   *  This corresponds to the Google Maps Place ID of where the address the
-   *  physical invitation was mailed.
    */
   id: string;
 
@@ -16,13 +13,6 @@ export interface Rsvp {
    * All of the guests associated with this RSVP.
    */
   guests: Guest[];
-
-  /**
-   * The current status of response for the guests.
-   *
-   * Defaults to pending.
-   */
-  status: RsvpStatus;
 
   /**
    * The primary email for the guests associated with this RSVP.
@@ -40,13 +30,4 @@ export interface Rsvp {
    * A song suggestion which we can play at the wedding!
    */
   songRecommendation?: string;
-}
-
-/**
- * The confirmation status of an RSVP.
- */
-export enum RsvpStatus {
-  pending,
-  confirmed,
-  declined,
 }

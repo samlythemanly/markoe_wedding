@@ -2,7 +2,7 @@ import { MealChoice, RsvpStatus } from '@models';
 import testFunctions from 'firebase-functions-test';
 import { mockFirebaseAdmin } from 'mock-firebase-ts';
 
-import type { PartialRsvp } from '../lib';
+import type { PartialRsvp } from '..';
 import type { Rsvp } from '@models';
 import type { CallableContext } from 'firebase-functions/v1/https';
 
@@ -35,31 +35,31 @@ describe('RSVP API', () => {
   const invalidContext: Partial<CallableContext> = { app: undefined };
 
   function stubRsvp(rsvp: PartialRsvp): void {
-    firebase.firestore().collection('rsvps').doc(rsvp.id).set(rsvp);
+    firebase.firestore().collection('rsvps').doc(rsvp.id).set([rsvp]);
   }
 
-  describe('fetchRsvp', () => {
-    let fetchRsvp: (
+  describe('fetchRsvps', () => {
+    let fetchRsvps: (
       id: string,
       context?: Partial<CallableContext>,
-    ) => Promise<Rsvp>;
+    ) => Promise<Rsvp[]>;
 
     beforeEach(async () => {
       const library = await import('..');
 
-      fetchRsvp = (id, context = validContext) =>
-        wrap(library.fetchRsvp)(id, context);
+      fetchRsvps = (id, context = validContext) =>
+        wrap(library.fetchRsvps)(id, context);
     });
 
     describe('returns an error', () => {
       test('when an RSVP with the provided ID does not exist', async () => {
-        await expect(fetchRsvp('unknown')).rejects.toThrow(
+        await expect(fetchRsvps('unknown')).rejects.toThrow(
           expect.objectContaining({ code: 'not-found' }),
         );
       });
 
       test('when app check is enabled and it fails', async () => {
-        await expect(fetchRsvp('id', invalidContext)).rejects.toThrow(
+        await expect(fetchRsvps('id', invalidContext)).rejects.toThrow(
           expect.objectContaining({ code: 'unauthenticated' }),
         );
       });
@@ -73,13 +73,13 @@ describe('RSVP API', () => {
           throw Error('Intentional test error');
         });
 
-        await expect(fetchRsvp('id')).rejects.toThrow(
+        await expect(fetchRsvps('id')).rejects.toThrow(
           expect.objectContaining({ code: 'internal' }),
         );
       });
     });
 
-    test('returns the RSVP with the provided ID', async () => {
+    test('returns the RSVPs with the provided ID', async () => {
       const rsvp: PartialRsvp = {
         id: 'rsvp_id',
         email: 'coolguy@coolmail.com',
@@ -87,7 +87,7 @@ describe('RSVP API', () => {
       };
       stubRsvp(rsvp);
 
-      await expect(fetchRsvp(rsvp.id)).resolves.toEqual(rsvp);
+      await expect(fetchRsvps(rsvp.id)).resolves.toEqual([rsvp]);
     });
   });
 

@@ -69,5 +69,14 @@
     "react/jsx-props-no-spreading": "warn",
     "react/jsx-tag-spacing": "warn",
     "react/jsx-wrap-multilines": ["warn", { "declaration": "parens-new-line" }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.test.tsx"],
+
+      "rules": {
+        "react/jsx-no-bind": ["warn", {"allowFunctions": true}]
+      }
+    }
+  ]
 }

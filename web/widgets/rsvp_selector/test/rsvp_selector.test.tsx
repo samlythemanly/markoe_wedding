@@ -1,93 +1,70 @@
 import { RsvpStatus } from '@models';
-import { Snackbar } from '@mui/material';
-import { rsvpServiceContext, RsvpService } from '@services/rsvp';
-import { cleanup, render } from '@testing-library/react';
-import { AddressAutocomplete } from '@widgets/address_autocomplete';
+import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { setUpRsvpPageJest } from '@views/rsvp_page/testing';
 import { RsvpSelector } from '@widgets/rsvp_selector';
 
-import type { Rsvp } from '@models';
+import type { Guest, Rsvp } from '@models';
+import type { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 
-jest.mock('@widgets/address_autocomplete');
-jest.mock('@services/rsvp');
-jest.mock('@mui/material', () => {
-  const actual = jest.requireActual('@mui/material');
+import { RsvpSummaryTestId } from '../lib/src/rsvp_summary';
 
-  return {
-    ...actual,
-    Snackbar: jest.fn(),
-  };
-});
+const mockNavigate = jest.fn();
 
-const MockAddressAutocomplete = AddressAutocomplete as jest.MockedFunction<
-  typeof AddressAutocomplete
->;
-const MockSnackbar = Snackbar as jest.MockedFunction<typeof Snackbar>;
-const MockRsvpService = RsvpService as jest.MockedClass<typeof RsvpService>;
-
-let retrievedRsvp: Rsvp | undefined;
-function markRetrieved(rsvp: Rsvp): void {
-  retrievedRsvp = rsvp;
-}
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
 
 describe(RsvpSelector.name, () => {
-  let selectAddress: (placeId: string) => void;
+  let user: UserEvent;
+
+  beforeAll(() => {
+    setUpRsvpPageJest();
+  });
 
   beforeEach(() => {
-    jest.resetAllMocks();
-    retrievedRsvp = undefined;
-
-    MockAddressAutocomplete.mockImplementation((props) => {
-      selectAddress = props.onSubmission;
-
-      return <div />;
-    });
-
-    render(
-      <rsvpServiceContext.Provider value={new MockRsvpService()}>
-        <RsvpSelector onRetrieval={markRetrieved} />
-      </rsvpServiceContext.Provider>,
-    );
+    user = userEvent.setup();
   });
+
+  function renderSelector(rsvps: Rsvp[]): void {
+    render(<RsvpSelector rsvps={rsvps} />);
+  }
+
+  function createGuest(name: string): Guest {
+    return {
+      name,
+      status: RsvpStatus.confirmed,
+      isPlusOne: false,
+    };
+  }
+
+  function createRsvp(guestName: string): Rsvp {
+    return {
+      guests: [createGuest(guestName)],
+      id: `${guestName} id`,
+      email: `${guestName}@example.com`,
+      canHavePlusOne: true,
+    };
+  }
 
   afterEach(cleanup);
 
-  test('fetches the RSVP with the selected place ID', () => {
-    selectAddress('place id');
+  test('renders an RSVP summary for each RSVP', () => {
+    const rsvps: Rsvp[] = [createRsvp('Milo'), createRsvp('Huck')];
+    renderSelector(rsvps);
 
-    expect(MockRsvpService.prototype.fetchRsvp).toBeCalledWith('place id');
+    const summaries = screen.queryAllByTestId(RsvpSummaryTestId.root);
+    expect(summaries).toHaveLength(2);
   });
 
-  test('emits the fetched RSVP associated with the selected place ID', async () => {
-    const rsvp: Rsvp = {
-      id: 'place id',
-      email: 'email',
-      guests: [],
-      status: RsvpStatus.pending,
-      canHavePlusOne: true,
-    };
+  test('navigates to the RSVP page with the selected RSVP on summary click', async () => {
+    const rsvp: Rsvp = createRsvp('Milo');
+    renderSelector([rsvp]);
 
-    MockRsvpService.prototype.fetchRsvp.mockImplementation(async (_: string) =>
-      Promise.resolve(rsvp),
-    );
+    const summary = screen.getByTestId(RsvpSummaryTestId.root);
+    await user.click(summary);
 
-    selectAddress('place id');
-
-    expect(retrievedRsvp).toEqual(rsvp);
-  });
-
-  test('displays an error if the RSVP fetch fails', () => {
-    MockRsvpService.prototype.fetchRsvp.mockImplementation(async (_: string) =>
-      Promise.reject(Error('Intentional test error')),
-    );
-
-    selectAddress('place id');
-
-    expect(MockSnackbar).toBeCalledWith(
-      expect.objectContaining({
-        open: true,
-        message: 'Intentional test error',
-      }),
-      expect.anything(),
-    );
+    expect(mockNavigate).toHaveNavigatedToRsvpPageWith([rsvp]);
   });
 });

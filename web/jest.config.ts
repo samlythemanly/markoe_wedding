@@ -27,6 +27,7 @@ const config: Config = {
     '^@assets/(.*)': '<rootDir>/assets/$1',
     '^@common/(.*)': '<rootDir>/common/$1',
     '^@services/(.*)': '<rootDir>/services/$1',
+    '^@theme/(.*)': '<rootDir>/theme/$1',
     '^@views/(.*)': '<rootDir>/views/$1',
     '^@widgets/(.*)': '<rootDir>/widgets/$1',
   },

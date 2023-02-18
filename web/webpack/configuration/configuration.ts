@@ -346,6 +346,7 @@ export default function webpackConfiguration(
         '@assets': paths.assets,
         '@common': paths.common,
         '@services': paths.services,
+        '@theme': paths.theme,
         '@views': paths.views,
         '@widgets': paths.widgets,
       },

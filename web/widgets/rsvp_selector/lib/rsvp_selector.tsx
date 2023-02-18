@@ -1,40 +1,23 @@
-import { Box, Grid, Snackbar, Typography } from '@mui/material';
-import { rsvpServiceContext } from '@services/rsvp';
-import { AddressAutocomplete } from '@widgets/address_autocomplete';
-import React from 'react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useNavigateWithRsvps } from '@views/rsvp_page';
+import * as React from 'react';
 
 import type { Rsvp } from '@models';
 
+import { RsvpSummary } from './src/rsvp_summary';
+
 interface RsvpSelectorProps {
-  onRetrieval: (rsvp: Rsvp) => void;
+  /**
+   * The RSVPs to select between.
+   */
+  rsvps: Rsvp[];
 }
 
 /**
- * Finds a user's RSVP via the address to which their invitation was sent.
+ * Given several RSVPs, presents the user a list to select between them.
  */
-export function RsvpSelector(props: RsvpSelectorProps): JSX.Element {
-  const rsvpService = React.useContext(rsvpServiceContext)!;
-  const [snackbarText, setSnackbarText] = React.useState<string>();
-  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
-
-  const closeSnackbar = React.useCallback(
-    () => setIsSnackbarOpen(false),
-    [setIsSnackbarOpen],
-  );
-
-  const fetchRsvp = React.useCallback(
-    async (selectedId: string): Promise<void> => {
-      try {
-        const rsvp = await rsvpService.fetchRsvp(selectedId);
-
-        props.onRetrieval(rsvp);
-      } catch (error) {
-        setSnackbarText((error as Error).message);
-        setIsSnackbarOpen(true);
-      }
-    },
-    [rsvpService],
-  );
+export const RsvpSelector = (props: RsvpSelectorProps): JSX.Element => {
+  const navigateWithRsvps = useNavigateWithRsvps();
 
   return (
     <Box
@@ -44,35 +27,40 @@ export function RsvpSelector(props: RsvpSelectorProps): JSX.Element {
       display="flex"
       minHeight="100vh"
     >
-      <Box padding={7} border={1} borderColor="divider" borderRadius={2}>
-        <Grid alignItems="center" container direction="column" spacing={4}>
-          <Grid
-            item
-            container
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Typography
             alignItems="center"
-            spacing={1}
-            direction="column"
+            display="flex"
+            flex={1}
+            flexDirection="column"
+            variant="h5"
           >
-            <Grid item>
-              <Typography variant="h4">Find your RSVP</Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="h6">
-                Please enter the address to which your invitation was sent
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item container>
-            <AddressAutocomplete onSubmission={fetchRsvp} />
+            <Box>
+              Looks like there were several invitations sent to this address!
+            </Box>
+            <Box>Please select the option which includes your name</Box>
+          </Typography>
+        </Grid>
+        <Grid item container>
+          <Grid alignItems="center" container direction="column" spacing={2}>
+            {props.rsvps.map((rsvp) => {
+              /**
+               * Navigates to the RSVP page for the particular RSVP.
+               */
+              const navigate = React.useCallback(() => {
+                navigateWithRsvps([rsvp]);
+              }, []);
+
+              return (
+                <Grid key={rsvp.id} item>
+                  <RsvpSummary rsvp={rsvp} onClick={navigate} />
+                </Grid>
+              );
+            })}
           </Grid>
         </Grid>
-      </Box>
-      <Snackbar
-        open={isSnackbarOpen}
-        autoHideDuration={5000}
-        onClose={closeSnackbar}
-        message={snackbarText}
-      />
+      </Grid>
     </Box>
   );
-}
+};

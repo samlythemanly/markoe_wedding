@@ -21,8 +21,8 @@ import type {
   TooltipComponentsPropsOverrides,
 } from '@mui/material';
 
-import { AutocompleteList } from './autocomplete_list';
-import { PoweredByGoogle } from './powered_by_google';
+import { AutocompleteList } from './src/autocomplete_list';
+import { PoweredByGoogle } from './src/powered_by_google';
 
 type Prediction = google.maps.places.AutocompletePrediction;
 
@@ -30,7 +30,17 @@ interface AddressAutocompleteProps {
   /**
    * Executed whenever a chosen autocompletion result is submitted.
    */
-  onSubmission: (placeId: string) => void;
+  onSubmission: (placeId: string) => void | Promise<void>;
+
+  /**
+   * An optional error to display on the input search box.
+   */
+  errorText?: string;
+
+  /**
+   * Whether to disable the input and submit button.
+   */
+  disabled?: boolean;
 }
 
 /**
@@ -129,6 +139,16 @@ export function AddressAutocomplete(
     (inputProps: AutocompleteRenderInputParams) => (
       <TextField
         {...inputProps}
+        error={props.errorText !== undefined}
+        FormHelperTextProps={{
+          sx: {
+            // Static height such that the UI doesn't jitter when the error text
+            // appears.
+            height: '21px',
+            fontSize: '13px',
+          },
+        }}
+        helperText={props.errorText}
         InputProps={{
           ...inputProps.InputProps,
           componentsProps: {
@@ -144,9 +164,12 @@ export function AddressAutocomplete(
           ),
         }}
         label="Address"
+        sx={{
+          paddingBottom: props.errorText ? 0 : 3,
+        }}
       />
     ),
-    [isLoading],
+    [isLoading, props.errorText],
   );
 
   /**
@@ -211,7 +234,7 @@ export function AddressAutocomplete(
 
   // Updates the available predictions to be chosen based on the given input
   // text.
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (
       inputText === query.current ||
       inputText === selection?.description ||
@@ -245,11 +268,12 @@ export function AddressAutocomplete(
   }, [inputText, isVisible]);
 
   return (
-    <Grid container direction="column" alignItems="center" spacing={3}>
+    <Grid container direction="column" alignItems="center" spacing={2}>
       <Grid item container>
         <Autocomplete
           autoComplete
           clearOnBlur={false}
+          disabled={props.disabled}
           fullWidth
           getOptionLabel={optionLabel}
           includeInputInList
@@ -287,7 +311,7 @@ export function AddressAutocomplete(
           title={
             !selection
               ? 'Please select an address from the input box above'
-              : ''
+              : 'Submit address'
           }
         >
           {
@@ -300,7 +324,7 @@ export function AddressAutocomplete(
               data-testid={AddressAutocompleteTestId.submitButton}
               onClick={submitPlace}
               variant="outlined"
-              disabled={!selection}
+              disabled={(props.disabled ?? false) || !selection}
             >
               Submit
             </Button>

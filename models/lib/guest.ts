@@ -8,6 +8,13 @@ export interface Guest {
   name: string;
 
   /**
+   * The current status of response for the guest.
+   *
+   * Defaults to pending.
+   */
+  status: RsvpStatus;
+
+  /**
    * The meal choice of the guest for dinner.
    */
   mealChoice?: MealChoice;
@@ -26,6 +33,15 @@ export interface Guest {
    * Whether this guest is a plus-one to another guest.
    */
   isPlusOne: boolean;
+}
+
+/**
+ * The confirmation status of an RSVP.
+ */
+export enum RsvpStatus {
+  pending,
+  confirmed,
+  declined,
 }
 
 /**

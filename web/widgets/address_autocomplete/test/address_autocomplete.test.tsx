@@ -2,7 +2,13 @@
 
 import { autocompleteServiceContext } from '@services/google_maps';
 import '@testing-library/jest-dom';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent, {
   PointerEventsCheckLevel,
 } from '@testing-library/user-event';
@@ -13,7 +19,7 @@ import {
 
 import type { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 
-import { poweredByGoogleTestId } from '../lib/powered_by_google';
+import { PoweredByGoogleTestId } from '../lib/src/powered_by_google';
 
 let submittedPlaceId: string | undefined;
 function submit(placeId: string): void {
@@ -30,17 +36,9 @@ window.google = {
   } as unknown as typeof google.maps,
 };
 
-export async function assertNever(callable: () => unknown): Promise<void> {
-  await expect(async () => waitFor(callable)).rejects.toEqual(
-    expect.anything(),
-  );
-}
-
 describe(AddressAutocomplete.name, () => {
   let user: UserEvent;
-  const autocompleteService = {
-    getPlacePredictions: jest.fn(),
-  };
+  let autocompleteService: { getPlacePredictions: jest.Mock };
 
   function createPrediction(parameters: {
     address: string;
@@ -71,14 +69,15 @@ describe(AddressAutocomplete.name, () => {
 
     submittedPlaceId = undefined;
 
+    autocompleteService = {
+      getPlacePredictions: jest.fn(),
+    };
     const autocomplete =
       autocompleteService as unknown as google.maps.places.AutocompleteService;
 
-    autocompleteService.getPlacePredictions.mockImplementation(async (_) =>
-      Promise.resolve({
-        predictions: [createPrediction({ address: 'address' })],
-      }),
-    );
+    autocompleteService.getPlacePredictions.mockResolvedValue({
+      predictions: [createPrediction({ address: 'address' })],
+    });
 
     render(
       <autocompleteServiceContext.Provider value={autocomplete}>
@@ -93,11 +92,12 @@ describe(AddressAutocomplete.name, () => {
     const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
     await user.type(input, 'address');
+    await waitForElementToBeRemoved(() =>
+      screen.getByTestId(AddressAutocompleteTestId.loading),
+    );
 
-    await waitFor(() =>
-      expect(autocompleteService.getPlacePredictions).toBeCalledWith(
-        expect.objectContaining({ input: 'address' }),
-      ),
+    expect(autocompleteService.getPlacePredictions).toBeCalledWith(
+      expect.objectContaining({ input: 'address' }),
     );
   });
 
@@ -112,8 +112,9 @@ describe(AddressAutocomplete.name, () => {
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
       await user.type(input, 'address');
-      await screen.findByTestId(AddressAutocompleteTestId.prediction);
-
+      await waitForElementToBeRemoved(() =>
+        screen.getByTestId(AddressAutocompleteTestId.loading),
+      );
       await user.clear(input);
 
       expect(autocompleteService.getPlacePredictions).toHaveBeenCalledTimes(1);
@@ -135,7 +136,6 @@ describe(AddressAutocomplete.name, () => {
   describe('session tokens', () => {
     test('are newly generated after submission', async () => {
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
-
       await user.type(input, 'address');
       const option = await screen.findByTestId(
         AddressAutocompleteTestId.prediction,
@@ -147,7 +147,9 @@ describe(AddressAutocomplete.name, () => {
       );
       await user.click(submitButton);
       await user.type(input, 'other address');
-      await screen.findByTestId(AddressAutocompleteTestId.noResults);
+      await waitForElementToBeRemoved(() =>
+        screen.getByTestId(AddressAutocompleteTestId.loading),
+      );
 
       const tokens = autocompleteService.getPlacePredictions.mock.calls.map(
         (call) => call[0].sessionToken,
@@ -158,7 +160,6 @@ describe(AddressAutocomplete.name, () => {
 
     test('are NOT newly generated if no place was submitted', async () => {
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
-
       await user.type(input, 'address');
       const option = await screen.findByTestId(
         AddressAutocompleteTestId.prediction,
@@ -167,7 +168,9 @@ describe(AddressAutocomplete.name, () => {
       await user.clear(input);
 
       await user.type(input, 'other address');
-      await screen.findByTestId(AddressAutocompleteTestId.noResults);
+      await waitForElementToBeRemoved(() =>
+        screen.getByTestId(AddressAutocompleteTestId.loading),
+      );
 
       const tokens = autocompleteService.getPlacePredictions.mock.calls.map(
         (call) => call[0].sessionToken,
@@ -179,14 +182,12 @@ describe(AddressAutocomplete.name, () => {
 
   describe('search results', () => {
     test('are displayed from the autocomplete service', async () => {
-      autocompleteService.getPlacePredictions.mockImplementation(async (_) =>
-        Promise.resolve({
-          predictions: [
-            createPrediction({ address: 'address 1' }),
-            createPrediction({ address: 'address 2' }),
-          ],
-        }),
-      );
+      autocompleteService.getPlacePredictions.mockResolvedValue({
+        predictions: [
+          createPrediction({ address: 'address 1' }),
+          createPrediction({ address: 'address 2' }),
+        ],
+      });
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
       await user.type(input, 'address');
@@ -194,8 +195,6 @@ describe(AddressAutocomplete.name, () => {
       const results = await screen.findAllByTestId(
         AddressAutocompleteTestId.prediction,
       );
-
-      screen.debug();
       expect(results.map((result) => result.textContent)).toEqual([
         'address 1',
         'address 2',
@@ -203,15 +202,16 @@ describe(AddressAutocomplete.name, () => {
     });
 
     test('are NOT displayed when the input is unfocused', async () => {
-      autocompleteService.getPlacePredictions.mockImplementation(async (_) =>
-        Promise.resolve({
-          predictions: [createPrediction({ address: 'address' })],
-        }),
-      );
+      autocompleteService.getPlacePredictions.mockResolvedValue({
+        predictions: [createPrediction({ address: 'address' })],
+      });
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
       await user.type(input, 'address');
-      user.tab();
+      await waitForElementToBeRemoved(() =>
+        screen.getByTestId(AddressAutocompleteTestId.loading),
+      );
+      await user.tab();
 
       const results = screen.queryAllByTestId(
         AddressAutocompleteTestId.prediction,
@@ -225,41 +225,33 @@ describe(AddressAutocomplete.name, () => {
     });
 
     test('displays empty message if none are available', async () => {
-      autocompleteService.getPlacePredictions.mockImplementation(async (_) =>
-        Promise.resolve({
-          predictions: [],
-        }),
-      );
+      autocompleteService.getPlacePredictions.mockResolvedValue({
+        predictions: [],
+      });
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
-      await user.type(input, 'address');
+      await act(async () => user.type(input, 'address'));
+      await waitForElementToBeRemoved(() =>
+        screen.getByTestId(AddressAutocompleteTestId.loading),
+      );
 
-      await waitFor(() => {
-        const noResults = screen.queryByTestId(
-          AddressAutocompleteTestId.noResults,
-        );
-        expect(noResults).not.toBeNull();
-      });
+      const noResults = screen.queryByTestId(
+        AddressAutocompleteTestId.noResults,
+      );
+      expect(noResults).not.toBeNull();
     });
 
     describe('when request is in-flight', () => {
-      let dispose: (_: unknown) => void;
-
       beforeEach(async () => {
-        dispose = (_) => undefined;
         autocompleteService.getPlacePredictions.mockImplementation(
           async (_) =>
-            new Promise((resolve, __) => {
-              dispose = resolve;
+            new Promise((__, ___) => {
+              // Never resolve.
             }),
         );
         const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
         await user.type(input, 'address');
-      });
-
-      afterEach(() => {
-        dispose(null);
       });
 
       test('displays loading text', () => {
@@ -289,22 +281,18 @@ describe(AddressAutocomplete.name, () => {
     test('displays the Powered by Google logo', async () => {
       const input = screen.getByTestId(AddressAutocompleteTestId.input);
 
-      user.click(input);
+      await user.click(input);
 
-      await waitFor(() => {
-        const logo = screen.queryByTestId(poweredByGoogleTestId);
-        expect(logo).not.toBeNull();
-      });
+      const logo = screen.queryByTestId(PoweredByGoogleTestId.root);
+      expect(logo).not.toBeNull();
     });
   });
 
   describe('submit button', () => {
     beforeEach(() => {
-      autocompleteService.getPlacePredictions.mockImplementation(async (_) =>
-        Promise.resolve({
-          predictions: [createPrediction({ address: 'address', id: 'id' })],
-        }),
-      );
+      autocompleteService.getPlacePredictions.mockResolvedValue({
+        predictions: [createPrediction({ address: 'address', id: 'id' })],
+      });
     });
 
     test('is disabled if nothing has been entered in the input', () => {
@@ -315,24 +303,23 @@ describe(AddressAutocomplete.name, () => {
     });
 
     describe('tooltip', () => {
-      test('is displayed when the button is disabled', async () => {
+      test('is displayed describing when the button is disabled', async () => {
         const submitButton = screen.getByTestId(
           AddressAutocompleteTestId.submitButton,
         );
 
         await user.hover(submitButton);
 
-        await waitFor(() => {
-          const tooltip = screen.queryByTestId(
-            AddressAutocompleteTestId.submitButtonTooltip,
-          );
-          expect(tooltip).not.toBeNull();
-        });
+        const tooltip = await screen.findByTestId(
+          AddressAutocompleteTestId.submitButtonTooltip,
+        );
+        expect(tooltip.textContent).toEqual(
+          expect.stringContaining('Please select'),
+        );
       });
 
-      test('is NOT displayed when the button is enabled', async () => {
+      test('is displayed describing when the button is enabled', async () => {
         const input = screen.getByTestId(AddressAutocompleteTestId.input);
-
         await user.type(input, 'address');
         const option = await screen.findByTestId(
           AddressAutocompleteTestId.prediction,
@@ -344,12 +331,10 @@ describe(AddressAutocomplete.name, () => {
         );
         await user.hover(submitButton);
 
-        await assertNever(() => {
-          const tooltip = screen.queryByTestId(
-            AddressAutocompleteTestId.submitButtonTooltip,
-          );
-          expect(tooltip).not.toBeNull();
-        });
+        const tooltip = await screen.findByTestId(
+          AddressAutocompleteTestId.submitButtonTooltip,
+        );
+        expect(tooltip.textContent).toEqual(expect.stringContaining('Submit'));
       });
     });
 

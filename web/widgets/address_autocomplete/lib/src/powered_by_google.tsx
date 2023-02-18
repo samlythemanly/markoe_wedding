@@ -4,7 +4,9 @@ import { Box } from '@mui/material';
 /**
  * Test ID for unit tests using the powered by Google component.
  */
-export const poweredByGoogleTestId = 'powered-by-google';
+export enum PoweredByGoogleTestId {
+  root = 'powered-by-google',
+}
 
 /**
  * The "Powered by Google" image required to be displayed when using Google Maps
@@ -13,7 +15,7 @@ export const poweredByGoogleTestId = 'powered-by-google';
 export function PoweredByGoogle(props: { innerText?: string }): JSX.Element {
   return (
     <Box
-      data-testid={poweredByGoogleTestId}
+      data-testid={PoweredByGoogleTestId.root}
       display="flex"
       alignItems="center"
       flex={1}
